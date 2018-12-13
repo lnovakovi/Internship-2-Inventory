@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Internship2_Inventory
@@ -11,9 +12,9 @@ namespace Internship2_Inventory
         public DateTime DateOfPurchase { get; set; }
         public int MonthsOfWarranty { get; set; }
         public decimal PurchasePrice { get; set; }
-        public Manufacturer NameOfManufacturer { get; set; }
+        public string NameOfManufacturer { get; set; }
 
-        public Inventory(string description, DateTime dateOfPurchase, int monthsOfWarranty, decimal purchasePrice, Manufacturer manufacturer)
+        public Inventory(string description, DateTime dateOfPurchase, int monthsOfWarranty, decimal purchasePrice, string manufacturer)
         {
             SerialNumber = Guid.NewGuid();
             Description = description;
@@ -23,5 +24,7 @@ namespace Internship2_Inventory
             NameOfManufacturer = manufacturer;
         }
     }
-    public enum Manufacturer { }
+
+   
+    
 }

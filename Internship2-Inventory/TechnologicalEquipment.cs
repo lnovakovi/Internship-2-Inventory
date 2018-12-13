@@ -8,7 +8,7 @@ namespace Internship2_Inventory
     {
         public bool BatteryIncluded { get; set; }
 
-        public TechnologicalEquipment(bool batteryIncluded, string description, DateTime dateOfPurchase, int monthsOfWarranty, decimal purchasePrice, Manufacturer manufacturer)
+        public TechnologicalEquipment(bool batteryIncluded, string description, DateTime dateOfPurchase, int monthsOfWarranty, decimal purchasePrice, string manufacturer)
             : base(description, dateOfPurchase, monthsOfWarranty, purchasePrice, manufacturer)
         {
             BatteryIncluded = batteryIncluded;
