@@ -21,7 +21,8 @@ namespace Internship2_Inventory
                               "3) Ispis koliko komada tehnološke opreme ima baterije\n" +
                               "4) Ispis svih mobitela\n" +
                               "5) Ispis računala s odabranim OS\n" +
-                              "6) Ispis svih vozila kojim registracija ističe u idućih mjesec dana");
+                              "6) Ispis imena i brojeva vlasnika mobitela kojima garancija ističe\n" +
+                              "7) Ispis svih vozila kojim registracija ističe u idućih mjesec dana");
             var choice = 0;
             do
             {
@@ -42,12 +43,18 @@ namespace Internship2_Inventory
                     PrintComputersWhoseWarrantyExpireInFollowingYear(newInput,Computers);
                     break;
                 case 3:
+                    Console.WriteLine("Number of Tech Equipment with included battery: " + CountTechnologicalEquipmentWithBatteryIncluded(Computers,Phones));
                     break;
                 case 4:
                     break;
                 case 5:
                     break;
                 case 6:
+                    Console.WriteLine("Enter year: ");
+                    newInput = int.Parse(Console.ReadLine());
+                    PrintCurrentOwnersWhoseWarrantyExpireInFollowingYear(newInput,Phones);
+                    break;
+                case 7:
                     break;
                     
                                    
@@ -90,7 +97,7 @@ namespace Internship2_Inventory
                 if (SerialNumber == item.SerialNumber)
                 {
                     br += 1;
-                    Console.WriteLine("Serial number: " + item.SerialNumber + " Name and surname:"+ item.NameSurname + "Phone number: " +item.PhoneNumber
+                    Console.WriteLine("Serial number: " + item.SerialNumber + " Name and surname:"+ item.NameSurname + "Phone number: 0" +item.PhoneNumber
                                       + " Date of purchase: " + item.DateOfPurchase +
                                       "  Description: " + item.Description + "  Months of Warranty: " +
                                       item.MonthsOfWarranty + "  Purchase price:" + item.PurchasePrice);
@@ -131,11 +138,57 @@ namespace Internship2_Inventory
 
             if (br == 0)
             {
-                Console.WriteLine("No computer with warranty that is expiring this year");
+                Console.WriteLine("No computer with warranty that is expires this year");
             }
                 
             }
-        
+
+        public static int CountTechnologicalEquipmentWithBatteryIncluded(List<Computer> computerList, List<MobilePhones> phoneList)
+        {
+            int br = 0;
+            foreach (var item in computerList)
+            {
+                if (item.BatteryIncluded)
+                    br += 1;
+            }
+
+            foreach (var item in phoneList)
+            {
+                if (item.BatteryIncluded)
+                    br += 1;
+            }
+            return br;
+        }
+
+        public static void PrintCurrentOwnersWhoseWarrantyExpireInFollowingYear(int year, List<MobilePhones> phoneList)
+        {
+
+            var br = 0;
+            foreach (var item in phoneList)
+            {
+                var yearsOfWarranty = item.MonthsOfWarranty / 12;
+                var newYear = item.DateOfPurchase.Year + yearsOfWarranty;
+                var monthsLeft = item.MonthsOfWarranty - yearsOfWarranty * 12;
+                var months = item.DateOfPurchase.Month + monthsLeft;
+                if (months > 12)
+                {
+                    var m = months - 12;
+                    newYear += 1;
+                }
+
+                if (newYear == year)
+                {
+                    br += 1;
+                    Console.WriteLine("Name and surname: " + item.NameSurname + " Number: 0" + item.PhoneNumber);
+                }
+
+            }
+
+            if (br == 0)
+            {
+                Console.WriteLine("No mobile phones with warranty that expires this year");
+            }
+        }
         public static List<Computer> InitializationMethodComputers()
         {
             var listOfComputers = new List<Computer>();
@@ -159,7 +212,7 @@ namespace Internship2_Inventory
         {
             var listOfMobiles = new List<MobilePhones>();
 
-            var mobile1 = new MobilePhones(091654234, "John Wick", true, "Bestseller", new DateTime(2012, 03, 29), 12,
+            var mobile1 = new MobilePhones(091654234, "John Wick", true, "Bestseller", new DateTime(2018, 03, 29), 36,
                 1234.54m, "Huawei");
             var mobile2 = new MobilePhones(0995432176, "Christopher Ashton", true, "new one",
                 new DateTime(2016, 12, 01), 24, 3456.99m, "Samsung");
