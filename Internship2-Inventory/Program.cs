@@ -23,14 +23,14 @@ namespace Internship2_Inventory
                               "4) Print mobile phones with manufacturer's name you enter\n" +
                               "5) Print computers with OS you enter\n" +
                               "6) Print owners of mobile phones whose warranty expires in year you enter\n" +
-                              "7) Print all the vehicles whose warranty expires in next month\n" +
+                              "7) Print all the vehicles whose registration expires in next month\n" +
                               "8) Print prices for both categories");
             var choice = 0;
             do
             {
                Console.WriteLine("Unesite broj:");
                choice = int.Parse((Console.ReadLine()));
-            } while (choice < 1 || choice > 6);
+            } while (choice < 1 || choice > 8);
 
             switch (choice)
             {
@@ -63,6 +63,7 @@ namespace Internship2_Inventory
                     PrintCurrentOwnersWhoseWarrantyExpireInFollowingYear(newInput,Phones);
                     break;
                 case 7:
+                    PrintVehiclesWhoseRegistrationExpiresInNextMonth(Vehicles);
                     break;
                 case 8:
                     break;
@@ -245,6 +246,22 @@ namespace Internship2_Inventory
             else
             {               
                 Console.WriteLine("Inventory does not have that computer with that OS");
+            }
+
+        }
+
+        public static void PrintVehiclesWhoseRegistrationExpiresInNextMonth(List<Vehicles> vehicleList)
+        {
+            var now = DateTime.Now;
+            foreach (var item in vehicleList)
+            {
+                var timeDiff = item.ExpirationDateOfRegistration - now; 
+                if ( timeDiff.TotalDays > 0 && timeDiff.TotalDays <= 30) // if registration has not expired(negative number) and total days less than 30 (approximately month) 
+                {
+                    Console.WriteLine("Serial number: "+item.SerialNumber + "  Expiration date: " +item.ExpirationDateOfRegistration +
+                                      "  Name of manufacturer: " +item.NameOfManufacturer + "  Mileage:"
+                                      +item.Mileage );
+                }
             }
 
         }
