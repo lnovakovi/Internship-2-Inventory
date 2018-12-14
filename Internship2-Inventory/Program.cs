@@ -13,9 +13,22 @@ namespace Internship2_Inventory
             var Computers = new List<Computer>();
             var Phones = new List<MobilePhones>();
             var Vehicles = new List<Vehicles>();
+            var Technological = new List<TechnologicalEquipment>();
+        
+            ;
             Computers = InitializationMethodComputers();
             Phones = InitializationMobiles();
             Vehicles = InitializationMethodVehicles();
+            foreach (var item in Computers)
+            {
+                Technological.Add(item);
+            }
+            foreach (var item in Phones)
+            {
+                Technological.Add(item);
+            }
+
+            Console.WriteLine(Technological.Count);
             Console.WriteLine("Choose an option:\n" +
                               "1) Print all the details of invetory\n" +
                               "2) Print computers whose warranty expires in year you enter\n" +
@@ -66,17 +79,12 @@ namespace Internship2_Inventory
                     PrintVehiclesWhoseRegistrationExpiresInNextMonth(Vehicles);
                     break;
                 case 8:
+                    PrintPrices(Vehicles,Technological);
                     break;
                     
                     
                                    
             }
-
-           
-
-
-
-
         }
 
         public static void CheckingInvetory(Guid SerialNumber, List<Computer> computerList,List<Vehicles> vehicleList,List<MobilePhones> phoneList)
@@ -263,12 +271,66 @@ namespace Internship2_Inventory
                                       +item.Mileage );
                 }
             }
+        }
 
+        public static void PrintPrices(List<Vehicles> vehicleList, List<TechnologicalEquipment> techs)
+        {
+            var currentPrice = 0m;
+            var _20percentOfOriginal = 0m;          
+            var _10percentOfOriginal = 0m;
+            var mileage = 0;
+            foreach (var item in vehicleList)
+            {
+                _20percentOfOriginal = item.PurchasePrice * 0.2m;
+                _10percentOfOriginal = item.PurchasePrice * 0.1m;
+                if (item.Mileage > 20000)
+                {
+                    mileage = (int) item.Mileage / 20000;
+                    currentPrice = item.PurchasePrice - (decimal)(mileage) * _10percentOfOriginal;
+                    Console.WriteLine(currentPrice);
+                    if (currentPrice < _20percentOfOriginal)
+                    {
+                        currentPrice = _20percentOfOriginal;
+                        currentPrice = Math.Round(currentPrice, 2);
+                    }
+                }
+                else
+                {
+                    currentPrice = item.PurchasePrice;
+                }
+                Console.WriteLine(" Name of manufacturer: " + item.NameOfManufacturer + 
+                                  "   Purchase price:"  + item.PurchasePrice + 
+                                  " Current price: "+ currentPrice + "  Diff: " + (item.PurchasePrice-currentPrice));
+            }
+            var _30percentOfOriginal = 0m;
+            var _5percentOfOriginal = 0m;
+            var now = DateTime.Now;           
+            foreach (var item in techs)
+            {
+               
+                _30percentOfOriginal = item.PurchasePrice * 0.3m;
+                _5percentOfOriginal = item.PurchasePrice * 0.05m;
+                var diffTime = now - item.DateOfPurchase;
+                var totalMonth = (int)(diffTime.TotalDays / 30);
+                if (totalMonth > 1)
+                {
+                    currentPrice = item.PurchasePrice - ((decimal)totalMonth * _5percentOfOriginal);
+                    if (currentPrice < _30percentOfOriginal)
+                    {
+                        currentPrice = _30percentOfOriginal;
+                        currentPrice = Math.Round(currentPrice, 2);
+                    }
+                }
+                    
+                Console.WriteLine(" Name of manufacturer: " + item.NameOfManufacturer +
+                                  "  Purchase price: " +item.PurchasePrice + "  Current price: "+ currentPrice 
+                                  + "  Difference: " + (item.PurchasePrice - currentPrice));
+                 
+            }
         }
         public static List<Computer> InitializationMethodComputers()
         {
             var listOfComputers = new List<Computer>();
-
             var computer1 = new Computer(OperatingSystem.WINDOWS, false, true,
                 "Windows 10 Home\nIntel® Core™ i7 - 6700HQ processor 2.60 GHz 15.6", new DateTime(2015, 10, 5), 12,
                 1321, Manufacturer.ACER);
@@ -288,10 +350,10 @@ namespace Internship2_Inventory
             return listOfComputers;
 
         }
+       
         public static List<MobilePhones> InitializationMobiles()
         {
             var listOfMobiles = new List<MobilePhones>();
-
             var mobile1 = new MobilePhones(091654234, "John Wick", true, "Bestseller", new DateTime(2018, 03, 29), 36,
                 1234.54m, Manufacturer.HUAWEI);
             var mobile2 = new MobilePhones(0995432176, "Christopher Ashton", true, "new one",
@@ -308,7 +370,6 @@ namespace Internship2_Inventory
         public static List<Vehicles> InitializationMethodVehicles()
         {
             var listOfVehicles= new List<Vehicles>();
-
             var vehicle1 = new Vehicles(new DateTime(2020,12,30),9000,"good",new DateTime(2014,12,03),180,234456.67m,Manufacturer.BMW);
             var vehicle2 = new Vehicles(new DateTime(2021,10,01),40123.34,"blue",new DateTime(2016,09,09),144,45678.65m,Manufacturer.OPEL);
             var vehicle3 = new Vehicles(new DateTime(2019,01,01),23000,"black",new DateTime(2018,10,05),120,34566.79m,Manufacturer.FORD);
