@@ -15,7 +15,6 @@ namespace Internship2_Inventory
             var Vehicles = new List<Vehicles>();
             var Technological = new List<TechnologicalEquipment>();
         
-            ;
             Computers = InitializationMethodComputers();
             Phones = InitializationMobiles();
             Vehicles = InitializationMethodVehicles();
@@ -27,8 +26,6 @@ namespace Internship2_Inventory
             {
                 Technological.Add(item);
             }
-
-            Console.WriteLine(Technological.Count);
             Console.WriteLine("Choose an option:\n" +
                               "1) Print all the details of invetory\n" +
                               "2) Print computers whose warranty expires in year you enter\n" +
@@ -38,27 +35,55 @@ namespace Internship2_Inventory
                               "6) Print owners of mobile phones whose warranty expires in year you enter\n" +
                               "7) Print all the vehicles whose registration expires in next month\n" +
                               "8) Print prices for both categories");
-            var choice = 0;
+            
+
+            var enterInput = false;
+            int output;
             do
             {
-               Console.WriteLine("Unesite broj:");
-               choice = int.Parse((Console.ReadLine()));
-            } while (choice < 1 || choice > 8);
+                Console.WriteLine("Enter number:");
+                var choiceMade = Console.ReadLine();
+                enterInput = int.TryParse(choiceMade, out output);
+                if (!enterInput )
+                {
+                    Console.WriteLine("Wrong type.");
+                }              
+            } while (!enterInput || output < 1 || output> 8);
 
-            switch (choice)
+            switch (output)
             {
                 case 1:
-                    Console.WriteLine("Enter serial number:");
-                    var input = Guid.Parse(Console.ReadLine());
-                    CheckingInvetory(input,Computers,Vehicles,Phones);
+                    var success = false;
+                    Guid result;
+                    Console.WriteLine("Enter serial number:");            
+                    do
+                    {
+                        var input = Console.ReadLine();
+                        success = Guid.TryParse(input, out result);
+                        if (!success)
+                        {
+                            Console.WriteLine("Wrong type.");
+                        }
+                    } while (!success);               
+                    CheckingInvetory(result,Computers,Vehicles,Phones);
                     break;
                 case 2:
+                    var newInput = "";
+                    var result1 = 0;
                     Console.WriteLine("Enter year: ");
-                    var newInput = int.Parse(Console.ReadLine());
-                    PrintComputersWhoseWarrantyExpireInFollowingYear(newInput,Computers);
+                    do
+                    {
+                        newInput = Console.ReadLine();
+                        success = int.TryParse(newInput, out result1);
+                        if (!success)
+                        {
+                            Console.WriteLine("Wrong type.");
+                        }
+                    } while (!success);                   
+                    PrintComputersWhoseWarrantyExpireInFollowingYear(result1,Computers);
                     break;
                 case 3:
-                    Console.WriteLine("Number of Tech Equipment with included battery: " + CountTechnologicalEquipmentWithBatteryIncluded(Computers,Phones));
+                    Console.WriteLine("Number of Tech Equipment with included battery: " + CountTechnologicalEquipmentWithBatteryIncluded(Technological));
                     break;
                 case 4:
                     Console.WriteLine("Enter phone's manufacturer: ");
@@ -72,8 +97,16 @@ namespace Internship2_Inventory
                     break;
                 case 6:
                     Console.WriteLine("Enter year: ");
-                    newInput = int.Parse(Console.ReadLine());
-                    PrintCurrentOwnersWhoseWarrantyExpireInFollowingYear(newInput,Phones);
+                    do
+                    {
+                        newInput = Console.ReadLine();
+                        success = int.TryParse(newInput, out result1);
+                        if (!success)
+                        {
+                            Console.WriteLine("Wrong type.");
+                        }
+                    } while (!success);
+                    PrintCurrentOwnersWhoseWarrantyExpireInFollowingYear(result1,Phones);
                     break;
                 case 7:
                     PrintVehiclesWhoseRegistrationExpiresInNextMonth(Vehicles);
@@ -163,16 +196,10 @@ namespace Internship2_Inventory
                 
             }
 
-        public static int CountTechnologicalEquipmentWithBatteryIncluded(List<Computer> computerList, List<MobilePhones> phoneList)
+        public static int CountTechnologicalEquipmentWithBatteryIncluded(List<TechnologicalEquipment> techs)
         {
             int br = 0;
-            foreach (var item in computerList)
-            {
-                if (item.BatteryIncluded)
-                    br += 1;
-            }
-
-            foreach (var item in phoneList)
+            foreach (var item in techs)
             {
                 if (item.BatteryIncluded)
                     br += 1;
@@ -342,7 +369,7 @@ namespace Internship2_Inventory
                 4361, Manufacturer.LENOVO);
             var computer4 = new Computer(OperatingSystem.WINDOWS, true, true,
                 "Intel® Celeron® N3350 processor Dual-core 1.10 GHz", new DateTime(2016, 08, 11), 36,
-                4361, Manufacturer.LENOVO);
+                4789, Manufacturer.LENOVO);
             listOfComputers.Add(computer1);
             listOfComputers.Add(computer2); 
             listOfComputers.Add(computer3);
