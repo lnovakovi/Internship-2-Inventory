@@ -12,9 +12,9 @@ namespace Internship2_Inventory
         public DateTime DateOfPurchase { get; set; }
         public int MonthsOfWarranty { get; set; }
         public decimal PurchasePrice { get; set; }
-        public string NameOfManufacturer { get; set; }
+        public Manufacturer  NameOfManufacturer { get; set; }
 
-        public Inventory(string description, DateTime dateOfPurchase, int monthsOfWarranty, decimal purchasePrice, string manufacturer)
+        public Inventory(string description, DateTime dateOfPurchase, int monthsOfWarranty, decimal purchasePrice, Manufacturer manufacturer)
         {
             SerialNumber = Guid.NewGuid();
             Description = description;
@@ -23,6 +23,19 @@ namespace Internship2_Inventory
             PurchasePrice = purchasePrice;
             NameOfManufacturer = manufacturer;
         }
+    }
+
+    public enum Manufacturer
+    {
+        Samsung =0,
+        Huawei = 1,
+        Sony= 2,
+        BMW = 3,
+        Opel = 4,
+        Ford = 5,
+        Acer = 6,
+        HP = 7,
+        Lenovo = 8
     }
 
    
