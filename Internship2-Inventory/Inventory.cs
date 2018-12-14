@@ -27,15 +27,15 @@ namespace Internship2_Inventory
 
     public enum Manufacturer
     {
-        Samsung =0,
-        Huawei = 1,
-        Sony= 2,
+        SAMSUNG =0,
+        HUAWEI = 1,
+        SONY= 2,
         BMW = 3,
-        Opel = 4,
-        Ford = 5,
-        Acer = 6,
+        OPEL = 4,
+        FORD = 5,
+        ACER = 6,
         HP = 7,
-        Lenovo = 8
+        LENOVO = 8
     }
 
    
